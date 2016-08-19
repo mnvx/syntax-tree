@@ -1,0 +1,36 @@
+{
+    "name": "mnvx/syntax-tree",
+    "description": "Syntax tree",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mnv",
+            "email": "mnvx@yandex.ru"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+        "mbostock/d3": "^3.5",
+        "twitter/bootstrap": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SyntaxTree\\": "src/SyntaxTree"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "mkdir -p public/vendor",
+            "mkdir -p public/vendor/d3",
+            "cp -r vendor/twitter/bootstrap/dist public/vendor/bootstrap/",
+            "cp vendor/mbostock/d3/d3.min.js public/vendor/d3/d3.min.js"
+        ],
+        "post-update-cmd": [
+            "mkdir -p public/vendor",
+            "mkdir -p public/vendor/d3",
+            "cp -r vendor/twitter/bootstrap/dist public/vendor/bootstrap/",
+            "cp vendor/mbostock/d3/d3.min.js public/vendor/d3/d3.min.js"
+        ]
+    }
+}

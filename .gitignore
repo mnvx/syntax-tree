@@ -1,0 +1,10 @@
+/bower_components
+/nbproject/
+/node_modules
+/vendor
+.DS_Store
+.env
+.idea
+_ide_helper.php
+Homestead.yaml
+Homestead.json
