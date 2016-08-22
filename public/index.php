@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<title>Syntax tree</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -10,14 +11,29 @@
 
 <body>
 
+<div class="container-fluid">
+
+<h1>Parser of syntax of russian sentences</h1>
+
 <form method="post">
-  <div class="form-group">
-    <label for="text">Text</label>
-    <textarea class="form-control" id="text" name="text" placeholder="Sentence"></textarea>
+  <div class="row">
+    <div class="col-md-1">
+      <div class="form-group">
+        <label for="text">Text</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <textarea class="form-control" id="text" name="text" placeholder="Sentence"></textarea>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+<hr>
 
 
 <?php
@@ -29,11 +45,11 @@ require '../vendor/autoload.php';
 
 $text = $_POST['text'] ?? null;
 
-echo '<p><label>Text:</label></p>';
-echo "<p>$text</p>";
+echo '<p><label>Text:</label> ';
+echo "$text</p>";
 
-$command = "/usr/local/tensorflow/models/syntaxnet/syntaxnet/models/parsey_universal/parse.sh /usr/local/tensorflow/Russian-SynTagRus 2>&1";
-$path = '/usr/local/tensorflow/models/syntaxnet/';
+$command = "syntaxnet/models/parsey_universal/parse.sh /home/tensor/tensorflow/Russian-SynTagRus";
+$path = '/home/tensor/tensorflow/models/syntaxnet/';
 
 $descriptors = array(
     0 => array('pipe', 'r'), // stdin
@@ -41,11 +57,11 @@ $descriptors = array(
     2 => array('pipe', 'w')  // stderr
 );
 
-// Here is problem
+// ! Sure what ~/.cache/bazel is acceseble for www-data !
 $process = proc_open($command, $descriptors, $pipes, $path);
 
-echo '<p><label>Command:</label></p>';
-echo "<p>$command</p>";
+//echo '<p><label>Command:</label></p>';
+//echo "<p>$command</p>";
 
 if (is_resource($process))
 {
@@ -54,50 +70,22 @@ if (is_resource($process))
     fclose($pipes[0]);
 
     $csv = stream_get_contents($pipes[1]);
-    echo '<p><label>csv:</label></p>';
-    echo "<p>$csv</p>";
+    echo '<p><label>Response &mdash; <a href="http://ilk.uvt.nl/conll/#dataformat">CoNLL-X</a> (CSV):</label></p>';
+    echo "<pre>$csv</pre>";
 
     $return_value = proc_close($process);
-    echo '<p><label>Val:</label></p>';
-    echo "<p>$return_value</p>";
+//    echo '<p><label>Val:</label></p>';
+//    echo "<p>$return_value</p>";
 }
 
-
-$csv = '1	Начальник	_	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|fPOS=NOUN++	7	nsubj	_	_
-2	Службы	_	NOUN	_	Animacy=Inan|Case=Gen|Gender=Fem|Number=Sing|fPOS=NOUN++	1	dobj	_	_
-3	безопасности	_	NOUN	_	Animacy=Inan|Case=Gen|Gender=Fem|Number=Sing|fPOS=NOUN++	2	dobj	_	_
-4	Украины	_	NOUN	_	Animacy=Inan|Case=Gen|Gender=Fem|Number=Sing|fPOS=NOUN++	2	nmod	_	_
-5	Владимир	_	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|fPOS=NOUN++	1	appos	_	_
-6	Путин	_	NOUN	_	Animacy=Anim|Case=Nom|Gender=Masc|Number=Sing|fPOS=NOUN++	5	name	_	_
-7	подтвердил,	_	VERB	_	Degree=Pos|fPOS=ADV++	0	ROOT	_	_
-8	что	_	PRON	_	fPOS=SCONJ++	20	mark	_	_
-9	двух	_	NUM	_	Case=Gen|fPOS=NUM++	10	nummod	_	_
-10	россиян,	_	NOUN	_	Animacy=Inan|Case=Gen|Gender=Fem|Number=Sing|fPOS=NOUN++	20	nsubj	_	_
-11	фигурирующих	_	VERB	_	Aspect=Imp|Case=Gen|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Act|fPOS=VERB++	10	nmod	_	_
-12	в	_	ADP	_	fPOS=ADP++	13	case	_	_
-13	деле	_	NOUN	_	Animacy=Inan|Case=Loc|Gender=Neut|Number=Sing|fPOS=NOUN++	11	nmod	_	_
-14	о	_	ADP	_	fPOS=ADP++	15	case	_	_
-15	событиях	_	NOUN	_	Animacy=Inan|Case=Loc|Gender=Neut|Number=Plur|fPOS=NOUN++	13	nmod	_	_
-16	в	_	ADP	_	fPOS=ADP++	17	case	_	_
-17	Киеве	_	NOUN	_	Animacy=Inan|Case=Loc|Gender=Masc|Number=Sing|fPOS=NOUN++	15	nmod	_	_
-18	2	_	NUM	_	fPOS=NUM++	19	nummod	_	_
-19	мая,	_	NOUN	_	Animacy=Inan|Case=Gen|Gender=Masc|Number=Sing|fPOS=NOUN++	17	nmod	_	_
-20	могут	_	VERB	_	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act|fPOS=VERB++	7	advcl	_	_
-21	обменять	_	VERB	_	Aspect=Perf|VerbForm=Inf|fPOS=VERB++	20	xcomp	_	_
-22	на	_	ADP	_	fPOS=ADP++	24	case	_	_
-23	двух	_	NUM	_	Animacy=Anim|Case=Acc|Gender=Masc|fPOS=NUM++	24	nummod	_	_
-24	граждан	_	NOUN	_	Animacy=Anim|Case=Gen|Gender=Masc|Number=Plur|fPOS=NOUN++	21	iobj	_	_
-25	Украины,	_	NOUN	_	fPOS=CONJ++	21	dobj	_	_
-26	которые	_	ADJ	_	Case=Nom|Degree=Pos|Number=Plur|fPOS=ADJ++	28	nsubj	_	_
-27	сейчас	_	ADV	_	Degree=Pos|fPOS=ADV++	28	advmod	_	_
-28	находятся	_	VERB	_	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act|fPOS=VERB++	25	acl:relcl	_	_
-29	в	_	ADP	_	fPOS=ADP++	30	case	_	_
-30	России.	_	NOUN	_	Animacy=Inan|Case=Loc|Gender=Fem|Number=Sing|fPOS=NOUN++	28	nmod	_	_';
 $syntaxTree = new \SyntaxTree\SyntaxTree();
 $tree = $syntaxTree->build($csv);
 
 ?>
 
+<p><label>Processed response:</label></p>
+
+</div>
 
 <script>
 

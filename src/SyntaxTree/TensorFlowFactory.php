@@ -20,6 +20,11 @@ class TensorFlowFactory
 
         foreach ($strings as $string)
         {
+            if (!$string)
+            {
+                continue;
+            }
+            $string = str_replace('"', '\\"', $string);
             $array[] = str_getcsv($string, $delimiter, $enclosure, $escape);
         }
         $nodes = static::createNodes($array);
