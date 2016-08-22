@@ -70,8 +70,6 @@ if (is_resource($process))
     fclose($pipes[0]);
 
     $csv = stream_get_contents($pipes[1]);
-    echo '<p><label>Response &mdash; <a href="http://ilk.uvt.nl/conll/#dataformat">CoNLL-X</a> (CSV):</label></p>';
-    echo "<pre>$csv</pre>";
 
     $return_value = proc_close($process);
 //    echo '<p><label>Val:</label></p>';
@@ -85,7 +83,7 @@ $tree = $syntaxTree->build($csv);
 
 <p><label>Processed response:</label></p>
 
-</div>
+<div id="tree"></div>
 
 <script>
 
@@ -104,7 +102,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#tree").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -230,6 +228,12 @@ function click(d) {
 
 </script>
 
+<?php
+    echo '<p><label>Response &mdash; <a href="http://ilk.uvt.nl/conll/#dataformat">CoNLL-X</a> (CSV):</label></p>';
+    echo "<pre>$csv</pre>";
+?>
+
+</div>
 
     </body>
 </html>
