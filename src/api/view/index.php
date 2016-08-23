@@ -65,13 +65,13 @@
     <pre><?php echo $csv ?></pre>
 
     <p><label>Json:</label></p>
-    <pre><?php echo $tree->toJson(JSON_PRETTY_PRINT); ?></pre>
+    <pre><?php echo $trees->toJson(JSON_PRETTY_PRINT); ?></pre>
 </div>
 
 <script src="vendor/d3/d3.min.js"></script>
 <script src="js/syntax-tree.js"></script>
 <script>
-    var data = JSON.parse('<?php echo $tree->toJson(); ?>');
+    var data = JSON.parse('<?php echo $trees[0]->toJson(); ?>');
     buildSyntaxTree(data);
 </script>
 

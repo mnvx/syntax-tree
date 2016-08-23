@@ -61,6 +61,11 @@ class SyntaxTree
         return $this;
     }
 
+    /**
+     * Build syntax tree for every sentence
+     * @param string $source
+     * @return Tree[]
+     */
     public function build($source)
     {
         switch ($this->system)

@@ -21,7 +21,7 @@ class Controller
         $csv = $command->execute();
 
         $syntaxTree = new \SyntaxTree\SyntaxTree();
-        $tree = $syntaxTree->build($csv);
+        $trees = $syntaxTree->build($csv);
 
         switch ($format)
         {
@@ -31,7 +31,7 @@ class Controller
 
             case 'JSON':
                 $options = $option === 'JSON_PRETTY_PRINT' ? JSON_PRETTY_PRINT : 0;
-                echo $tree->toJson($options);
+                echo $trees->toJson($options);
                 break;
 
             default:

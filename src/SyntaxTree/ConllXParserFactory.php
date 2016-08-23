@@ -11,28 +11,45 @@ class ConllXParserFactory
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
-     * @return Tree
+     * @return TreeCollection
      */
     public static function create($csv, $delimiter = "\t", $enclosure = '"', $escape = "\\" )
     {
         $strings = explode("\n", $csv);
+        $sentences = [];
         $array = [];
 
         foreach ($strings as $string)
         {
             if (!$string)
             {
+                $sentences[] = $array;
+                $array = [];
                 continue;
             }
             $string = str_replace('"', '\\"', $string);
             $array[] = str_getcsv($string, $delimiter, $enclosure, $escape);
         }
-        $nodes = static::createNodes($array);
+        if ($array)
+        {
+            $sentences[] = $array;
+        }
 
-        return new Tree($nodes);
+        return static::createTrees($sentences);
+    }
+    
+    protected static function createTrees(array $sentences)
+    {
+        $trees = [];
+        foreach ($sentences as $array)
+        {
+            $trees[] = new Tree(static::createNodes($array));
+        }
+
+        return new TreeCollection($trees);
     }
 
-    protected static function createNodes(&$array, $rootIndex = 0)
+    protected static function createNodes(array &$array, $rootIndex = 0)
     {
         $data = [];
         foreach ($array as $item)
