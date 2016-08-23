@@ -3,6 +3,7 @@
 namespace SyntaxTreeApi\Model;
 
 use SyntaxTree\Command\TensorFlowCommand;
+use SyntaxTreeApi\Config\Configuration;
 
 class ParseSyntaxCommandFactory
 {
@@ -11,7 +12,7 @@ class ParseSyntaxCommandFactory
         $command = new TensorFlowCommand();
 
         return $command
-            ->setSyntaxnetPath('/home/tensor/tensorflow/models/syntaxnet/')
-            ->setModelPath('/home/tensor/tensorflow/Russian-SynTagRus');
+            ->setSyntaxnetPath(Configuration::getSyntaxNetPath())
+            ->setModelPath(Configuration::getSyntaxNetModelPath());
     }
 }
