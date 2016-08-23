@@ -2,7 +2,7 @@
 
 namespace SyntaxTree;
 
-class MaltParserFactory extends TensorFlowFactory
+class MaltParserFactory extends ConllXParserFactory
 {
 
 }

@@ -16,7 +16,8 @@
     },
     "autoload": {
         "psr-4": {
-            "SyntaxTree\\": "src/SyntaxTree"
+            "SyntaxTree\\": "src/SyntaxTree",
+            "SyntaxTreeApi\\": "src/api"
         }
     },
     "scripts": {
