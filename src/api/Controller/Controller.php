@@ -2,6 +2,8 @@
 
 namespace SyntaxTreeApi\Controller;
 
+use SyntaxTreeApi\Model\ParseSyntaxCommandFactory;
+
 class Controller
 {
     
@@ -14,29 +16,9 @@ class Controller
 
         $option = $data['option'] ?? null;
 
-
-        $command = "syntaxnet/models/parsey_universal/parse.sh /home/tensor/tensorflow/Russian-SynTagRus";
-        $path = '/home/tensor/tensorflow/models/syntaxnet/';
-
-        $descriptors = [
-            0 => ['pipe', 'r'], // stdin
-            1 => ['pipe', 'w'], // stdout
-            2 => ['pipe', 'w'], // stderr
-        ];
-
-        // ! Sure what ~/.cache/bazel is acceseble for www-data !
-        $process = proc_open($command, $descriptors, $pipes, $path);
-
-        if (is_resource($process))
-        {
-
-            fwrite($pipes[0], $text);
-            fclose($pipes[0]);
-
-            $csv = stream_get_contents($pipes[1]);
-
-            proc_close($process);
-        }
+        $command = ParseSyntaxCommandFactory::createTensorFlowCommand()
+            ->setText($text);
+        $csv = $command->execute();
 
         $syntaxTree = new \SyntaxTree\SyntaxTree();
         $tree = $syntaxTree->build($csv);
