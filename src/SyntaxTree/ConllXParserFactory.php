@@ -23,16 +23,15 @@ class ConllXParserFactory
         {
             if (!$string)
             {
-                $sentences[] = $array;
+                if ($array)
+                {
+                    $sentences[] = $array;
+                }
                 $array = [];
                 continue;
             }
             $string = str_replace('"', '\\"', $string);
             $array[] = str_getcsv($string, $delimiter, $enclosure, $escape);
-        }
-        if ($array)
-        {
-            $sentences[] = $array;
         }
 
         return static::createTrees($sentences);

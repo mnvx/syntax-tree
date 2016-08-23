@@ -42,11 +42,6 @@ class Node
         foreach ($this->children as $item)
         {
             $children[] = $item->toArray();
-//            $children[] = [
-//                'number' => $item->getNumber(),
-//                'text' => $item->getText(),
-//                'children' => $children,
-//            ];
         }
 
         $array = [
