@@ -1,3 +1,6 @@
+<?php
+  use SyntaxTreeApi\Model\ParseSyntaxCommandFactory;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,8 +58,8 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <select class="form-control" id="system" name="system">
-                        <option>TensorFlow</option>
-                        <option>MaltParser</option>
+                        <option <?php echo $system === ParseSyntaxCommandFactory::SYSTEM_TENSOR_FLOW ? 'selected="selected"' : ''; ?>>TensorFlow</option>
+                        <option <?php echo $system === ParseSyntaxCommandFactory::SYSTEM_MALT_PARSER ? 'selected="selected"' : ''; ?>>MaltParser</option>
                     </select>
                 </div>
             </div>
