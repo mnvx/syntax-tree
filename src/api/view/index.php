@@ -47,6 +47,22 @@
         </div>
 
         <div class="row">
+            <div class="col-md-1">
+              <div class="form-group">
+                <label for="format">System</label>
+              </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <select class="form-control" id="system" name="system">
+                        <option>TensorFlow</option>
+                        <option>MaltParser</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
@@ -71,7 +87,7 @@
 <script src="vendor/d3/d3.min.js"></script>
 <script src="js/syntax-tree.js"></script>
 <script>
-    var data = JSON.parse('<?php echo $trees[0]->toJson(); ?>');
+    var data = JSON.parse('<?php echo $trees[0] ? $trees[0]->toJson() : 'null'; ?>');
     buildSyntaxTree(data);
 </script>
 

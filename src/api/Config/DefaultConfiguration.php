@@ -18,4 +18,9 @@ class DefaultConfiguration implements ConfigurationInterface
         return static::$syntaxNetModelPath;
     }
 
+    public static function getMaltParserPath()
+    {
+        return static::$maltParserPath;
+    }
+
 }

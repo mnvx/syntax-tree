@@ -2,27 +2,20 @@
 
 namespace SyntaxTree\Command;
 
-class TensorFlowCommand extends AbstractParseSyntaxCommand implements CommandInterface
+class MaltParserCommand extends AbstractParseSyntaxCommand implements CommandInterface
 {
 
-    protected $syntaxnetPath;
-    protected $modelPath;
+    protected $maltParserPath;
 
-    public function setSyntaxnetPath($syntaxnetPath)
+    public function setPath($maltParserPath)
     {
-        $this->syntaxnetPath = $syntaxnetPath;
-        return $this;
-    }
-
-    public function setModelPath($modelPath)
-    {
-        $this->modelPath = $modelPath;
+        $this->maltParserPath = $maltParserPath;
         return $this;
     }
 
     public function execute()
     {
-        $command = "syntaxnet/models/parsey_universal/parse.sh " . $this->modelPath;
+        $command = "./russian-malt.sh";
 
         $descriptors = [
             0 => ['pipe', 'r'], // stdin
@@ -31,7 +24,7 @@ class TensorFlowCommand extends AbstractParseSyntaxCommand implements CommandInt
         ];
 
         // ! Sure what ~/.cache/bazel is acceseble for www-data !
-        $process = proc_open($command, $descriptors, $pipes, $this->syntaxnetPath);
+        $process = proc_open($command, $descriptors, $pipes, $this->maltParserPath);
 
         if (is_resource($process))
         {

@@ -16,7 +16,9 @@ class Controller
 
         $option = $data['option'] ?? null;
 
-        $command = ParseSyntaxCommandFactory::createTensorFlowCommand()
+        $system = $data['system'] ?? null;
+
+        $command = ParseSyntaxCommandFactory::create($system)
             ->setText($text);
         $csv = $command->execute();
 

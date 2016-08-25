@@ -17,4 +17,10 @@ class Configuration extends DefaultConfiguration
      */
     protected static $syntaxNetModelPath = '/home/tensor/tensorflow/Russian-SynTagRus';
 
+    /**
+     * Path to MaltParser (directory with russian-malt.sh)
+     * @var string
+     */
+    protected static $maltParserPath = '/home/tensor/malt/installation';
+
 }
