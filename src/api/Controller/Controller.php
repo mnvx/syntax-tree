@@ -3,6 +3,7 @@
 namespace SyntaxTreeApi\Controller;
 
 use SyntaxTreeApi\Model\ParseSyntaxCommandFactory;
+use SyntaxTree\SyntaxTree;
 
 class Controller
 {
@@ -26,7 +27,7 @@ class Controller
             $csv = $command->execute();
         }
 
-        $syntaxTree = new \SyntaxTree\SyntaxTree();
+        $syntaxTree = new SyntaxTree();
         $trees = $syntaxTree->build($csv);
 
         switch ($format)

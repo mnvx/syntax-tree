@@ -21,8 +21,7 @@ function buildSyntaxTree(data)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    console.log(data);
-      root = data[0];
+      root = data;
       root.x0 = height / 2;
       root.y0 = 0;
 

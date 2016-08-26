@@ -16,72 +16,29 @@ class Node
     protected $text;
 
     /**
-     * @var Node[] Children nodes
+     * @param string $text
+     * @param int $number
      */
-    protected $children;
-
-    public function __construct($text, $number = null, array $children = [])
+    public function __construct($text, $number)
     {
         $this->text = $text;
         $this->number = $number;
-        $this->children = $children;
     }
 
+    /**
+     * @return int
+     */
     function getNumber()
     {
         return $this->number;
     }
 
+    /**
+     * @return string
+     */
     function getText()
     {
         return $this->text;
-    }
-
-    function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * Serialisation to array
-     * 
-     * @return array
-     */
-    public function toArray()
-    {
-        $children = [];
-        foreach ($this->children as $item)
-        {
-            $children[] = $item->toArray();
-        }
-
-        $array = [
-            'number' => $this->getNumber(),
-            'text' => $this->getText(),
-            'children' => $children,
-        ];
-
-        return $array;
-    }
-    
-    /**
-     * Deserialisation from array
-     * 
-     * @param array $array
-     * @return \static
-     */
-    public static function createFromArray(array $array)
-    {
-        $children = [];
-        if (!empty($array['children']))
-        {
-            foreach ($array['children'] as $child)
-            {
-                $children[] = static::createFromArray($child);
-            }
-        }
-        $node = new static($array['text'], $array['number'], $children);
-        return $node;
     }
 
 }

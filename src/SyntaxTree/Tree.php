@@ -2,60 +2,48 @@
 
 namespace SyntaxTree;
 
-use RecursiveIterator;
-
-class Tree implements RecursiveIterator
+class Tree
 {
 
     /**
-     * @var Node[] Nested array
+     * @var Node
      */
     private $data;
 
-    private $position = 0;
+    /**
+     * @var Tree[]
+     */
+    private $children;
 
-    public function __construct(array $data)
+    /**
+     * @param Node $node
+     * @param Tree[] $children
+     */
+    public function __construct(Node $node, array $children = [])
     {
-        $this->data = $data;
+        $this->data = $node;
+        $this->children = $children;
     }
 
-    public function valid()
-    {
-        return isset($this->data[$this->position]);
-    }
-
-    public function hasChildren()
-    {
-        return is_array($this->data[$this->position]);
-    }
-
-    public function next()
-    {
-        $this->position++;
-    }
-
-    public function current()
-    {
-        return $this->data[$this->position];
-    }
-
+    /**
+     * Get children items
+     * 
+     * @return Tree[]
+     */
     public function getChildren()
     {
-        if ($this->hasChildren())
-        {
-            return new static($this->data[$this->position]);
-        }
-        return null;
+        return $this->children;
     }
 
-    public function rewind()
+    /**
+     * Get tree in JSON format
+     * 
+     * @param int $options
+     * @return string
+     */
+    public function toJson($options = 0)
     {
-        $this->position = 0;
-    }
-
-    public function key()
-    {
-        return $this->position;
+        return json_encode($this->toArray(), $options);
     }
 
     /**
@@ -65,18 +53,18 @@ class Tree implements RecursiveIterator
      */
     public function toArray()
     {
-        $array = [];
-        foreach ($this->data as $item)
+        $array = [
+            'number' => $this->data->getNumber(),
+            'text' => $this->data->getText(),
+            'children' => [],
+        ];
+
+        foreach ($this->children as $child)
         {
-            $array[] = $item->toArray();
+            $array['children'][] = $child->toArray();
         }
 
         return $array;
-    }
-
-    public function toJson($options = 0)
-    {
-        return json_encode($this->toArray(), $options);
     }
 
     /**
@@ -87,17 +75,23 @@ class Tree implements RecursiveIterator
      */
     public static function createFromArray(array $array)
     {
-        if (count($array) > 1)
+        if (!isset($array['text']))
         {
-            throw new SyntaxTreeException('Root node MUST contains only one element');
+            throw new SyntaxTreeException('"text" item not found');
         }
-        elseif (count($array) === 0)
+        if (!isset($array['number']))
         {
-            return null;
+            throw new SyntaxTreeException('"number" item not found');
         }
 
-        $data = Node::createFromArray($array[0]);
-        return new static([$data]);
+        $children = [];
+        foreach ($array['children'] as $child)
+        {
+            $children[] = static::createFromArray($child);
+        }
+        $node = new Node($array['text'], $array['number']);
+
+        return new static($node, $children);
     }
 
 }

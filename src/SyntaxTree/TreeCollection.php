@@ -71,6 +71,11 @@ class TreeCollection implements Iterator, ArrayAccess
         return isset($this->trees[$offset]) ? $this->trees[$offset] : null;
     }
 
+    /**
+     * Serialisation to array
+     * 
+     * @return array
+     */
     public function toArray()
     {
         $array = [];
@@ -83,11 +88,23 @@ class TreeCollection implements Iterator, ArrayAccess
         return $array;
     }
 
+    /**
+     * Get tree collection in JSON format
+     * 
+     * @param int $options
+     * @return string
+     */
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
     }
 
+    /**
+     * Deserialisation from array
+     * 
+     * @param array $array
+     * @return \static
+     */
     public static function createFromJson($jsonString)
     {
         $array = json_decode($jsonString, true);

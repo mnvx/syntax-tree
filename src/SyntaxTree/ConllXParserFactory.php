@@ -42,21 +42,33 @@ class ConllXParserFactory
         $trees = [];
         foreach ($sentences as $array)
         {
-            $trees[] = new Tree(static::createNodes($array));
+            $treeArray = static::createNestedArray($array);
+            if (count($treeArray) !== 1)
+            {
+                throw new SyntaxTreeException(sprintf(
+                    'Root node must be one, but %d root nodes generated.', 
+                    count($treeArray)
+                ));
+            }
+            $trees[] = Tree::createFromArray($treeArray[0]);
         }
 
         return new TreeCollection($trees);
     }
 
-    protected static function createNodes(array &$array, $rootIndex = 0)
+    protected static function createNestedArray(array &$array, $rootIndex = 0)
     {
         $data = [];
         foreach ($array as $item)
         {
             if ($item[6] == $rootIndex)
             {
-                $children = static::createNodes($array, $item[0]);
-                $data[] = new Node($item[1], $item[0], $children);
+                $children = static::createNestedArray($array, $item[0]);
+                $data[] = [
+                    'number' => $item[0],
+                    'text' => $item[1],
+                    'children' => $children,
+                ];
             }
         }
         return $data;
