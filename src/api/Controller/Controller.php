@@ -18,9 +18,13 @@ class Controller
 
         $system = $data['system'] ?? null;
 
-        $command = ParseSyntaxCommandFactory::create($system)
-            ->setText($text);
-        $csv = $command->execute();
+        $csv = '';
+        if ($text)
+        {
+            $command = ParseSyntaxCommandFactory::create($system)
+                ->setText($text);
+            $csv = $command->execute();
+        }
 
         $syntaxTree = new \SyntaxTree\SyntaxTree();
         $trees = $syntaxTree->build($csv);

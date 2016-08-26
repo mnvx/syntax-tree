@@ -21,7 +21,7 @@ class ParseSyntaxCommandFactory
             case self::SYSTEM_MALT_PARSER:
                 return self::createMaltParserCommand();
             default:
-                throw new Exception(sprintf('Unknown system: %s', $system));
+                throw new \RuntimeException(sprintf('Unknown system: %s', $system));
         }
     }
 
