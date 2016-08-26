@@ -5,16 +5,22 @@ namespace SyntaxTree;
 class Node
 {
 
+    /**
+     * @var int Index number of phrase in sentence
+     */
     protected $number;
 
+    /**
+     * @var string Phrase - text of syntax tree node
+     */
     protected $text;
 
     /**
-     * @var Node[]
+     * @var Node[] Children nodes
      */
     protected $children;
 
-    public function __construct($text, $number = null, $children = [])
+    public function __construct($text, $number = null, array $children = [])
     {
         $this->text = $text;
         $this->number = $number;
@@ -36,6 +42,11 @@ class Node
         return $this->children;
     }
 
+    /**
+     * Serialisation to array
+     * 
+     * @return array
+     */
     public function toArray()
     {
         $children = [];
@@ -51,6 +62,26 @@ class Node
         ];
 
         return $array;
+    }
+    
+    /**
+     * Deserialisation from array
+     * 
+     * @param array $array
+     * @return \static
+     */
+    public static function createFromArray(array $array)
+    {
+        $children = [];
+        if (!empty($array['children']))
+        {
+            foreach ($array['children'] as $child)
+            {
+                $children[] = static::createFromArray($child);
+            }
+        }
+        $node = new static($array['text'], $array['number'], $children);
+        return $node;
     }
 
 }

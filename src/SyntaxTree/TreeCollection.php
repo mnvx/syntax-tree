@@ -14,7 +14,7 @@ class TreeCollection implements Iterator, ArrayAccess
     protected $trees;
     protected $position = 0;
 
-    public function __construct($trees)
+    public function __construct(array $trees)
     {
         $this->trees = $trees;
     }
@@ -86,6 +86,19 @@ class TreeCollection implements Iterator, ArrayAccess
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
+    }
+
+    public static function createFromJson($jsonString)
+    {
+        $array = json_decode($jsonString, true);
+
+        $data = [];
+        foreach ($array as $item)
+        {
+            $data[] = Tree::createFromArray($item);
+        }
+
+        return new static($data);
     }
 
 }

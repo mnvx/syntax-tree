@@ -58,6 +58,11 @@ class Tree implements RecursiveIterator
         return $this->position;
     }
 
+    /**
+     * Serialisation to array
+     * 
+     * @return array
+     */
     public function toArray()
     {
         $array = [];
@@ -72,6 +77,27 @@ class Tree implements RecursiveIterator
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * Deserialisation from array
+     * 
+     * @param array $array
+     * @return \static
+     */
+    public static function createFromArray(array $array)
+    {
+        if (count($array) > 1)
+        {
+            throw new SyntaxTreeException('Root node MUST contains only one element');
+        }
+        elseif (count($array) === 0)
+        {
+            return null;
+        }
+
+        $data = Node::createFromArray($array[0]);
+        return new static([$data]);
     }
 
 }
