@@ -16,15 +16,31 @@ class Tree
     private $children;
 
     /**
+     * @var Tree
+     */
+    private $parent;
+
+    /**
      * @param Node $node
      * @param Tree[] $children
+     * @param Tree $parent
      */
-    public function __construct(Node $node, array $children = [])
+    public function __construct(Node $node, array $children = [], Tree $parent = null)
     {
         $this->data = $node;
         $this->children = $children;
+        $this->parent = $parent;
     }
 
+    /**
+     * Get current node
+     * @return Node
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+    
     /**
      * Get children items
      * 
@@ -33,6 +49,16 @@ class Tree
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Add child item
+     * 
+     * @param Tree $child
+     */
+    public function addChild(Tree $child)
+    {
+        $this->children[] = $child;
     }
 
     /**
@@ -47,7 +73,42 @@ class Tree
     }
 
     /**
-     * Serialisation to array
+     * Get tree as flat array. Indexes are word numbers.
+     * 
+     * @return Tree[]
+     */
+    public function toFlatArray($withParents = false)
+    {
+        $items[$this->data->getNumber()] = $this;
+
+        foreach ($this->children as $item)
+        {
+            $items += $item->toFlatArray();
+        }
+
+        if ($withParents)
+        {
+            $items += $this->getFlatParents();
+        }
+
+        return $items;
+    }
+
+    protected function getFlatParents()
+    {
+        $parents = [];
+
+        if ($this->parent)
+        {
+            $parent[$this->parent->data->getNumber()] = $this->parent;
+            $parents = $parent + $this->parent->getFlatParents();
+        }
+
+        return $parents;
+    }
+
+    /**
+     * Serialisation to nested array
      * 
      * @return array
      */
@@ -68,12 +129,12 @@ class Tree
     }
 
     /**
-     * Deserialisation from array
+     * Deserialisation from nested array
      * 
      * @param array $array
      * @return \static
      */
-    public static function createFromArray(array $array)
+    public static function createFromArray(array $array, Tree $parent = null)
     {
         if (!isset($array['text']))
         {
@@ -84,14 +145,14 @@ class Tree
             throw new SyntaxTreeException('"number" item not found');
         }
 
-        $children = [];
+        $current = new static(new Node($array['text'], $array['number']), [], $parent);
+
         foreach ($array['children'] as $child)
         {
-            $children[] = static::createFromArray($child);
+            $current->addChild(static::createFromArray($child, $current));
         }
-        $node = new Node($array['text'], $array['number']);
 
-        return new static($node, $children);
+        return $current;
     }
 
 }
