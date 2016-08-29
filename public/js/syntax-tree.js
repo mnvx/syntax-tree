@@ -64,7 +64,7 @@ function buildSyntaxTree(data)
           .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
           .attr("dy", ".35em")
           .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-          .text(function(d) { return d.text; })
+          .text(function(d) { return d.text + " (" + d.pos + ")"; })
           .style("fill-opacity", 1e-6);
 
       // Transition nodes to their new position.

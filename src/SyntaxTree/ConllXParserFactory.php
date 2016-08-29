@@ -66,6 +66,7 @@ class ConllXParserFactory
                 $data[] = [
                     'number' => $item[0],
                     'text' => $item[1],
+                    'pos' => $item[3],
                     'children' => $children,
                 ];
             }

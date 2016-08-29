@@ -117,6 +117,7 @@ class Tree
         $array = [
             'number' => $this->data->getNumber(),
             'text' => $this->data->getText(),
+            'pos' => $this->data->getPartOfSpeech(),
             'children' => [],
         ];
 
@@ -145,7 +146,7 @@ class Tree
             throw new SyntaxTreeException('"number" item not found');
         }
 
-        $current = new static(new Node($array['text'], $array['number']), [], $parent);
+        $current = new static(new Node($array['text'], $array['number'], $array['pos']), [], $parent);
 
         foreach ($array['children'] as $child)
         {
