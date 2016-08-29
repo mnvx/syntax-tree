@@ -10,7 +10,7 @@ class SyntaxTree
     protected $system = self::SYSTEM_TENSOR_FLOW;
 
     protected $delimiter = "\t";
-    protected $enclosure = '"';
+    protected $enclosure = "\t";
     protected $escape = "\\";
 
     public function __construct()

@@ -90,7 +90,7 @@
 <script src="vendor/d3/d3.min.js"></script>
 <script src="js/syntax-tree.js"></script>
 <script>
-    var data = JSON.parse('<?php echo $trees[0] ? $trees[0]->toJson() : 'null'; ?>');
+    var data = <?php echo isset($trees[0]) ? $trees[0]->toJson() : 'null'; ?>;
     buildSyntaxTree(data);
 </script>
 

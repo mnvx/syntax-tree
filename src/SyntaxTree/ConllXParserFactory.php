@@ -13,7 +13,7 @@ class ConllXParserFactory
      * @param string $escape
      * @return TreeCollection
      */
-    public static function create($csv, $delimiter = "\t", $enclosure = '"', $escape = "\\" )
+    public static function create($csv, $delimiter = "\t", $enclosure = "\t", $escape = "\\" )
     {
         $strings = explode("\n", $csv);
         $sentences = [];
@@ -30,7 +30,6 @@ class ConllXParserFactory
                 $array = [];
                 continue;
             }
-            $string = str_replace('"', '\\"', $string);
             $array[] = str_getcsv($string, $delimiter, $enclosure, $escape);
         }
 
