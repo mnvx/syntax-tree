@@ -98,7 +98,7 @@ class Tree
     {
         $parents = [];
 
-        if ($this->parent)
+        if ($this->data->getPartOfSpeech() !== Node::POS_VERB && $this->parent)
         {
             $parent[$this->parent->data->getNumber()] = $this->parent;
             $parents = $parent + $this->parent->getFlatParents();
