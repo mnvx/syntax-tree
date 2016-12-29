@@ -42,13 +42,28 @@ class ConllXParserFactory
         foreach ($sentences as $array)
         {
             $treeArray = static::createNestedArray($array);
-            if (count($treeArray) !== 1)
+
+            // Here may be problem: https://github.com/tensorflow/models/issues/828
+            if (count($treeArray) > 1)
+            {
+                if (in_array($treeArray[0]['pos'], [Node::POS_PUNCT || $treeArray[0]['pos'] === Node::POS_SYM]))
+                {
+                    unset($treeArray[0]);
+                    $treeArray = array_values($treeArray);
+                }
+                else
+                {
+                    unset($treeArray[1]);
+                }
+            }
+            elseif (count($treeArray) !== 1)
             {
                 throw new SyntaxTreeException(sprintf(
-                    'Root node must be one, but %d root nodes generated.', 
+                    'Root node must be one, but %d root nodes generated.',
                     count($treeArray)
                 ));
             }
+
             $trees[] = Tree::createFromArray($treeArray[0]);
         }
 
