@@ -23,7 +23,7 @@ class MaltParserCommand extends AbstractParseSyntaxCommand implements CommandInt
             2 => ['pipe', 'w'], // stderr
         ];
 
-        // ! Sure what ~/.cache/bazel is acceseble for www-data !
+        // ! Sure what ru-syntax/tmp is acceseble for www-data !
         $process = proc_open($command, $descriptors, $pipes, $this->maltParserPath);
 
         if (is_resource($process))

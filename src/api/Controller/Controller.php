@@ -28,6 +28,7 @@ class Controller
         }
 
         $syntaxTree = new SyntaxTree();
+        $syntaxTree->setSystem($system);
         $trees = $syntaxTree->build($csv);
 
         switch ($format)

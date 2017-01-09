@@ -30,10 +30,20 @@ class ConllXParserFactory
                 $array = [];
                 continue;
             }
-            $array[] = str_getcsv($string, $delimiter, $enclosure, $escape);
+            $row = str_getcsv($string, $delimiter, $enclosure, $escape);
+            if (isset($row[3]))
+            {
+                $row[3] = static::getPos($row[3]);
+            }
+            $array[] = $row;
         }
 
         return static::createTrees($sentences);
+    }
+
+    protected static function getPos(string $pos)
+    {
+        return $pos;
     }
     
     protected static function createTrees(array $sentences)

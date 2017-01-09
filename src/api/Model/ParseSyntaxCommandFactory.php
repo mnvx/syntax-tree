@@ -4,13 +4,14 @@ namespace SyntaxTreeApi\Model;
 
 use SyntaxTree\Command\TensorFlowCommand;
 use SyntaxTree\Command\MaltParserCommand;
+use SyntaxTree\SyntaxTree;
 use SyntaxTreeApi\Config\Configuration;
 
 class ParseSyntaxCommandFactory
 {
 
-    const SYSTEM_TENSOR_FLOW = 'TensorFlow';
-    const SYSTEM_MALT_PARSER = 'MaltParser';
+    const SYSTEM_TENSOR_FLOW = SyntaxTree::SYSTEM_TENSOR_FLOW;
+    const SYSTEM_MALT_PARSER = SyntaxTree::SYSTEM_MALT_PARSER;
 
     public static function create($system = self::SYSTEM_TENSOR_FLOW)
     {

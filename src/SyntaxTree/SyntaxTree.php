@@ -4,8 +4,8 @@ namespace SyntaxTree;
 
 class SyntaxTree
 {
-    const SYSTEM_TENSOR_FLOW = 1;
-    const SYSTEM_MALT_PARSER = 2;
+    const SYSTEM_TENSOR_FLOW = 'TensorFlow';
+    const SYSTEM_MALT_PARSER = 'MaltParser';
 
     protected $system = self::SYSTEM_TENSOR_FLOW;
 
